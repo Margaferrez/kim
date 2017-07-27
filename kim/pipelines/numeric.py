@@ -163,7 +163,7 @@ class FloatMarshalPipeline(MarshalPipeline):
         :class:`kim.pipelines.marshaling.MarshalPipeline`
     """
 
-    validation_pipes = [is_valid_float] + MarshalPipeline.validation_pipes
+    validation_pipes = [is_valid_float, bounds_check] + MarshalPipeline.validation_pipes
     process_pipes = [coerce_to_float] + MarshalPipeline.process_pipes
 
 

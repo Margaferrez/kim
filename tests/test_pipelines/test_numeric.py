@@ -226,6 +226,28 @@ def test_float_input():
     assert output == {'name': 2.0}
 
 
+def test_min_max_float():
+
+    field = Float(name='age', min=0, max=1.5)
+    output = {}
+
+    mapper_session = get_mapper_session(data={'age': -1}, output=output)
+    with pytest.raises(FieldInvalid):
+        field.marshal(mapper_session)
+
+    mapper_session = get_mapper_session(data={'age': 4}, output=output)
+    with pytest.raises(FieldInvalid):
+        field.marshal(mapper_session)
+
+    mapper_session = get_mapper_session(data={'age': 0.7}, output=output)
+    field.marshal(mapper_session)
+    assert output == {'age': 0.7}
+
+    mapper_session = get_mapper_session(data={'age': 1.5}, output=output)
+    field.marshal(mapper_session)
+    assert output == {'age': 1.5}
+
+
 def test_float_input_precision():
 
     field = Float(name='name', required=True, precision=4)
@@ -240,6 +262,7 @@ def test_float_input_precision():
 def test_float_field_invalid_type():
 
     field = Decimal(name='name')
+    
     mapper_session = get_mapper_session(
         data={'name': None, 'email': 'mike@mike.com'}, output={})
     with pytest.raises(FieldInvalid):
