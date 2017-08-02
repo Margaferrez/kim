@@ -434,6 +434,7 @@ class FloatFieldOpts(FieldOpts):
         """ Construct a new instance of :class:`FloatFieldOpts`
         and set config options
 
+
         :param precision: Specify the precision of the float
         :param max: Specify the maximum permitted value
         :param min: Specify the minimum permitted value
