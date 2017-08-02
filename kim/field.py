@@ -457,11 +457,15 @@ class DecimalFieldOpts(FieldOpts):
         and set config options
 
         :param precision: Specify the precision of the decimal
+        :param max: Specify the maximum permitted value
+        :param min: Specify the minimum permitted value
 
         :raises: :class:`FieldOptsError`
         :returns: None
         """
         self.precision = kwargs.pop('precision', 5)
+        self.max = kwargs.pop('max', None)
+        self.min = kwargs.pop('min', None)
         super(DecimalFieldOpts, self).__init__(**kwargs)
 
 
@@ -477,7 +481,7 @@ class Decimal(Float):
         class UserMapper(Mapper):
             __type__ = User
 
-            score = field.Decimal(precision=4)
+            score = field.Decimal(precision=4, min=0, max=1.5)
 
     """
 
