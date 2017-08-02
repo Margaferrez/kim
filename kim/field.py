@@ -341,6 +341,27 @@ class Field(object):
         run_pipeline(self.serialize_pipes, session, self, **opts)
 
 
+class StringFieldOpts(FieldOpts):
+    """Custom FieldOpts class that provides additional config options for
+    :class:`String`.
+
+    """
+
+    def __init__(self, **kwargs):
+        """ Construct a new instance of :class:`StringFieldOpts`
+        and set config options
+
+        :param max: Specify the maximum permitted length
+        :param min: Specify the minimum permitted length
+
+        :raises: :class:`FieldOptsError`
+        :returns: None
+        """
+        self.max = kwargs.pop('max', None)
+        self.min = kwargs.pop('min', None)
+        super(StringFieldOpts, self).__init__(**kwargs)
+
+
 class String(Field):
     """:class:`String` represents a value that must be valid
     when passed to str()
@@ -356,7 +377,7 @@ class String(Field):
             name = field.String(required=True)
 
     """
-
+    opts_class = StringFieldOpts
     marshal_pipeline = StringMarshalPipeline
     serialize_pipeline = StringSerializePipeline
 
@@ -446,28 +467,6 @@ class Float(Field):
     marshal_pipeline = FloatMarshalPipeline
     serialize_pipeline = FloatSerializePipeline
 
-class DecimalFieldOpts(FieldOpts):
-    """Custom FieldOpts class that provides additional config options for
-    :class:`Decimal`.
-
-    """
-
-    def __init__(self, **kwargs):
-        """ Construct a new instance of :class:`DecimalFieldOpts`
-        and set config options
-
-        :param precision: Specify the precision of the decimal
-        :param max: Specify the maximum permitted value
-        :param min: Specify the minimum permitted value
-
-        :raises: :class:`FieldOptsError`
-        :returns: None
-        """
-        self.precision = kwargs.pop('precision', 5)
-        self.max = kwargs.pop('max', None)
-        self.min = kwargs.pop('min', None)
-        super(DecimalFieldOpts, self).__init__(**kwargs)
-
 
 class Decimal(Float):
     """:class:`Decimal` represents a value that must be valid
@@ -485,52 +484,9 @@ class Decimal(Float):
 
     """
 
-    opts_class = DecimalFieldOpts
+    opts_class = FloatFieldOpts
     marshal_pipeline = DecimalMarshalPipeline
     serialize_pipeline = DecimalSerializePipeline
-
-class FloatFieldOpts(FieldOpts):
-    """Custom FieldOpts class that provides additional config options for
-    :class:`Float`.
-
-    """
-
-    def __init__(self, **kwargs):
-        """ Construct a new instance of :class:`FloatFieldOpts`
-        and set config options
-
-        :param precision: Specify the precision of the float
-        :param max: Specify the maximum permitted value
-        :param min: Specify the minimum permitted value
-
-        :raises: :class:`FieldOptsError`
-        :returns: None
-        """
-        self.precision = kwargs.pop('precision', 5)
-        self.max = kwargs.pop('max', None)
-        self.min = kwargs.pop('min', None)
-        super(FloatFieldOpts, self).__init__(**kwargs)
-
-
-class Float(Field):
-    """:class:`Float` represents a value that must be valid
-    Float type.
-
-    Usage::
-
-        from kim import Mapper
-        from kim import field
-
-        class UserMapper(Mapper):
-            __type__ = User
-
-            score = field.Float(precision=4)
-
-    """
-
-    opts_class = FloatFieldOpts
-    marshal_pipeline = FloatMarshalPipeline
-    serialize_pipeline = FloatSerializePipeline
 
 
 class BooleanFieldOpts(FieldOpts):
