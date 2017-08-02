@@ -262,7 +262,7 @@ def test_float_input_precision():
 def test_float_field_invalid_type():
 
     field = Decimal(name='name')
-    
+
     mapper_session = get_mapper_session(
         data={'name': None, 'email': 'mike@mike.com'}, output={})
     with pytest.raises(FieldInvalid):
